@@ -291,6 +291,9 @@ $(document).ready(function() {
                         skierMapX -= skierSpeed;
                         placeNewObstacle(skierDirection);
                     }
+                    else if (skierDirection === 0) {
+                        skierDirection = 1;
+                    } 
                     else {
                         skierDirection--;
                     }
@@ -301,6 +304,9 @@ $(document).ready(function() {
                         skierMapX += skierSpeed;
                         placeNewObstacle(skierDirection);
                     }
+                    else if (skierDirection === 0) {
+                        skierDirection = 5;
+                    } 
                     else {
                         skierDirection++;
                     }
