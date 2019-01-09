@@ -1,0 +1,17 @@
+{
+    "name": "ceros-ski",
+    "version": "0.0.1",
+    "description": "",
+    "main": "web.js",
+    "scripts": {
+        "start": "node web.js"
+    },
+    "author": "dan.wash@ceros.com",
+    "license": "",
+    "engines": {
+        "node": "8.4.0"
+    },
+    "dependencies": {
+        "http-server": "^0.10.0"
+    }
+}
