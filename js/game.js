@@ -23,6 +23,8 @@ $(document).ready(function() {
 
     var obstacles = [];
 
+    var gameIsOver = false;
+
     var gameWidth = window.innerWidth;
     var gameHeight = window.innerHeight;
     var canvas = $('<canvas></canvas>')
@@ -49,17 +51,20 @@ $(document).ready(function() {
             case 2:
                 skierMapX -= Math.round(skierSpeed / 1.4142);
                 skierMapY += Math.round(skierSpeed / 1.4142);
+                Score.setScore(Math.floor(skierMapY));
 
                 placeNewObstacle(skierDirection);
                 break;
             case 3:
                 skierMapY += skierSpeed;
+                Score.setScore(Math.floor(skierMapY));
 
                 placeNewObstacle(skierDirection);
                 break;
             case 4:
                 skierMapX += skierSpeed / 1.4142;
                 skierMapY += skierSpeed / 1.4142;
+                Score.setScore(Math.floor(skierMapY));
 
                 placeNewObstacle(skierDirection);
                 break;
@@ -92,12 +97,28 @@ $(document).ready(function() {
         return skierAssetName;
     };
 
+    var drawDashboard = function() {
+        var dashboardPosX = 0.95 * window.innerWidth * window.devicePixelRatio;
+
+        ctx.font = "bold 36px sans-serif";
+        ctx.fillStyle = 'darkblue';
+        ctx.textAlign = "right";
+        ctx.fillText('Ceros Ski Masters', dashboardPosX, 50);
+        ctx.font = "26px sans-serif";
+        ctx.fillStyle = 'darkorange';
+        ctx.fillText('Top Score: ' + Score.getMaxScore(), dashboardPosX, 90);
+        ctx.fillText('Score: ' + Score.getScore(), dashboardPosX, 120);
+    };
+
     var drawSkier = function() {
         var skierAssetName = getSkierAsset();
         var skierImage = loadedAssets[skierAssetName];
         var x = (gameWidth - skierImage.width) / 2;
         var y = (gameHeight - skierImage.height) / 2;
-
+        
+        ctx.font = "bold 12px sans-serif";
+        ctx.fillStyle = 'darkorange';
+        ctx.fillText(Score.getScore(), x, y-10);
         ctx.drawImage(skierImage, x, y, skierImage.width, skierImage.height);
     };
 
@@ -183,7 +204,7 @@ $(document).ready(function() {
             type : obstacleTypes[obstacleIndex],
             x : position.x,
             y : position.y
-        })
+        });
     };
 
     var calculateOpenPosition = function(minX, maxX, minY, maxY) {
@@ -201,7 +222,7 @@ $(document).ready(function() {
             return {
                 x: x,
                 y: y
-            }
+            };
         }
     };
 
@@ -228,7 +249,10 @@ $(document).ready(function() {
         });
 
         if(collision) {
+            gameIsOver = true;
+            Score.updateScore();
             skierDirection = 0;
+            confirmModal();
         }
     };
 
@@ -240,25 +264,18 @@ $(document).ready(function() {
     };
 
     var gameLoop = function() {
-
-        ctx.save();
-
-        // Retina support
-        ctx.scale(window.devicePixelRatio, window.devicePixelRatio);
-
-        clearCanvas();
-
-        moveSkier();
-
-        checkIfSkierHitObstacle();
-
-        drawSkier();
-
-        drawObstacles();
-
-        ctx.restore();
-
-        requestAnimationFrame(gameLoop);
+        if (!gameIsOver) {
+            ctx.save();
+            ctx.scale(window.devicePixelRatio, window.devicePixelRatio);
+            clearCanvas();
+            moveSkier();
+            checkIfSkierHitObstacle();
+            drawSkier();
+            drawObstacles();
+            ctx.restore();
+            drawDashboard();
+            requestAnimationFrame(gameLoop);
+        }
     };
 
     var loadAssets = function() {
@@ -327,11 +344,15 @@ $(document).ready(function() {
         });
     };
 
+    var confirmModal = function() {
+        alert('Play again?');
+        location.reload(true);
+    };
+
     var initGame = function() {
         setupKeyhandler();
         loadAssets().then(function() {
             placeInitialObstacles();
-
             requestAnimationFrame(gameLoop);
         });
     };
