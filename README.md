@@ -13,6 +13,7 @@ Code commits:
 * Added a fixed dashboard in the top right corner for the scores and a live player's score while he plays.
 * Added a favicon.
 * Provide a way to pause and resume the game (game can be paused/resumed with the space button).
+* Skier gets faster as the game progresses.
 
 Devops actions:
 
