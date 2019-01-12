@@ -24,6 +24,7 @@ $(document).ready(function() {
     var obstacles = [];
 
     var gameIsOver = false;
+    var gameIsPaused = false;
 
     var gameWidth = window.innerWidth;
     var gameHeight = window.innerHeight;
@@ -265,16 +266,18 @@ $(document).ready(function() {
 
     var gameLoop = function() {
         if (!gameIsOver) {
-            ctx.save();
-            ctx.scale(window.devicePixelRatio, window.devicePixelRatio);
-            clearCanvas();
-            moveSkier();
-            checkIfSkierHitObstacle();
-            drawSkier();
-            drawObstacles();
-            ctx.restore();
-            drawDashboard();
-            requestAnimationFrame(gameLoop);
+            if (!gameIsPaused) {
+                ctx.save();
+                ctx.scale(window.devicePixelRatio, window.devicePixelRatio);
+                clearCanvas();
+                moveSkier();
+                checkIfSkierHitObstacle();
+                drawSkier();
+                drawObstacles();
+                ctx.restore();
+                drawDashboard();
+                requestAnimationFrame(gameLoop);
+            }
         }
     };
 
@@ -340,6 +343,13 @@ $(document).ready(function() {
                     skierDirection = 3;
                     event.preventDefault();
                     break;
+                case 32: // space
+                    gameIsPaused = !gameIsPaused;
+                    if (!gameIsPaused) {
+                        requestAnimationFrame(gameLoop);
+                    }
+                    event.preventDefault();
+                    break; 
             }
         });
     };
