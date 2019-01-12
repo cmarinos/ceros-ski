@@ -41,7 +41,6 @@ $(document).ready(function() {
     var skierDirection = 5;
     var skierMapX = 0;
     var skierMapY = 0;
-    var skierSpeed = 8;
 
     var clearCanvas = function() {
         ctx.clearRect(0, 0, gameWidth, gameHeight);
@@ -50,23 +49,23 @@ $(document).ready(function() {
     var moveSkier = function() {
         switch(skierDirection) {
             case 2:
-                skierMapX -= Math.round(skierSpeed / 1.4142);
-                skierMapY += Math.round(skierSpeed / 1.4142);
-                Score.setScore(Math.floor(skierMapY));
+                skierMapX -= Math.round(Skier.getSpeed() / 1.4142);
+                skierMapY += Math.round(Skier.getSpeed() / 1.4142);
 
+                Score.setScore(Math.floor(skierMapY));
                 placeNewObstacle(skierDirection);
                 break;
             case 3:
-                skierMapY += skierSpeed;
-                Score.setScore(Math.floor(skierMapY));
+                skierMapY += Skier.getSpeed();
 
+                Score.setScore(Math.floor(skierMapY));
                 placeNewObstacle(skierDirection);
                 break;
             case 4:
-                skierMapX += skierSpeed / 1.4142;
-                skierMapY += skierSpeed / 1.4142;
-                Score.setScore(Math.floor(skierMapY));
+                skierMapX += Skier.getSpeed() / 1.4142;
+                skierMapY += Skier.getSpeed() / 1.4142;
 
+                Score.setScore(Math.floor(skierMapY));
                 placeNewObstacle(skierDirection);
                 break;
         }
@@ -308,7 +307,7 @@ $(document).ready(function() {
             switch(event.which) {
                 case 37: // left
                     if(skierDirection === 1) {
-                        skierMapX -= skierSpeed;
+                        skierMapX -= Skier.getSpeed();
                         placeNewObstacle(skierDirection);
                     }
                     else if (skierDirection === 0) {
@@ -321,7 +320,7 @@ $(document).ready(function() {
                     break;
                 case 39: // right
                     if(skierDirection === 5) {
-                        skierMapX += skierSpeed;
+                        skierMapX += Skier.getSpeed();
                         placeNewObstacle(skierDirection);
                     }
                     else if (skierDirection === 0) {
@@ -334,7 +333,7 @@ $(document).ready(function() {
                     break;
                 case 38: // up
                     if(skierDirection === 1 || skierDirection === 5) {
-                        skierMapY -= skierSpeed;
+                        skierMapY -= Skier.getSpeed();
                         placeNewObstacle(6);
                     }
                     event.preventDefault();
