@@ -12,6 +12,7 @@ Code commits:
 * Added scores (player score, top scorer) and stored them to localStorage in order to have them after browser refreshes.
 * Added a fixed dashboard in the top right corner for the scores and a live player's score while he plays.
 * Added a favicon.
+* Provide a way to pause and resume the game (game can be paused/resumed with the space button).
 
 Devops actions:
 
